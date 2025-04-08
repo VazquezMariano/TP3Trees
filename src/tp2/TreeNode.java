@@ -1,4 +1,4 @@
-package ProgramacionIII.tp2;
+package tp2;
 
 public class TreeNode {
 
@@ -30,6 +30,10 @@ public class TreeNode {
 
 	public Integer getValue() {
 		return value;
+	}
+	
+	public void setValue(int val) {
+		this.value = val;
 	}
 
 
