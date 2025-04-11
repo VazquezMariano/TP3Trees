@@ -1,5 +1,7 @@
 package tp2;
 
+import java.util.ArrayList;
+
 public class Tree {
 
 	private TreeNode root;
@@ -101,6 +103,102 @@ public class Tree {
 		int initialSize = size(root);
 		root = deleteRec(root, val);
 		return initialSize != size(root);
+		
+	}
+	
+	public int getHeight() {
+		return getHeightRec(root);
+	}
+	
+	private int getHeightRec(TreeNode nodo) {
+		if(nodo == null) return -1;
+		
+		int alturaLeft = getHeightRec(nodo.getLeft());
+		int alturaRight = getHeightRec(nodo.getRight());
+		
+		return Math.max(alturaLeft, alturaRight) + 1;
+	}
+	
+	public void imprimirPreOrder() {
+		imprimirPreOrderRec(root);
+		System.out.println();
+	}
+	
+	private void imprimirPreOrderRec(TreeNode nodo) {
+		if(nodo == null) return;
+		System.out.print(nodo.getValue() +  " ");
+		imprimirPreOrderRec(nodo.getLeft());
+		imprimirPreOrderRec(nodo.getRight());
+		//son iguales cambia el momento de impresion y cambia el lugar en el callstack
+	}
+	
+	public ArrayList<Integer> getRamaLarga(){
+		return getRamaLargaRec(root);
+	}
+
+	private ArrayList<Integer> getRamaLargaRec(TreeNode nodo) {
+		if(nodo == null) return new ArrayList<Integer>();
+		
+		ArrayList<Integer> izq = getRamaLargaRec(nodo.getLeft());
+		ArrayList<Integer> der = getRamaLargaRec(nodo.getRight());
+		
+		ArrayList<Integer> masLarga = (izq.size() > der.size()) ? izq : der;
+		ArrayList<Integer> resultado = new ArrayList<>();
+		resultado.add(nodo.getValue());
+		resultado.addAll(masLarga);
+		return resultado;
+		
+		
+	}
+	
+	public ArrayList<Integer> getFrontera(){
+		ArrayList<Integer> resultados = new ArrayList<>();
+		if(root != null) {
+			getFronteraRec(root, resultados);
+		}
+		return resultados;
+	}
+
+	private void getFronteraRec(TreeNode nodo, ArrayList<Integer> resultados) {
+		if(nodo.getLeft() == null && nodo.getRight() == null) {
+			resultados.add(nodo.getValue());
+		}
+		getFronteraRec(nodo.getLeft(), resultados);
+		getFronteraRec(nodo.getRight(), resultados);
+		
+	}
+	
+	public Integer getMaxElem() {
+		if(!this.isEmpty()) {
+			return getMaxElemRec(root);
+		}
+		return null;
+	}
+
+	private Integer getMaxElemRec(TreeNode n) {
+		if(n.getRight() == null) return n.getValue();
+		
+		return getMaxElemRec(n.getRight());
+		
+	}
+	
+	public ArrayList<Integer> getElemAtLevel(int i){
+		ArrayList<Integer> resultados = new ArrayList<>();
+		if(root != null) {
+			getElemAtLevelRec(root, resultados, i, 0);
+		}
+		return resultados;
+	}
+
+	private void getElemAtLevelRec(TreeNode nodo, ArrayList<Integer> resultados, int i, int contador) {
+		if(nodo == null) return;
+		if(i == contador) {
+			resultados.add(nodo.getValue());
+			return;
+		}
+		
+		getElemAtLevelRec(nodo.getLeft(), resultados, i, contador +1);
+		getElemAtLevelRec(nodo.getRight(), resultados, i, contador +1);
 		
 	}
 	
